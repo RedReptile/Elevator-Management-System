@@ -3,6 +3,8 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Media;
 using System.Threading.Tasks;
+using Elevator_Management_System;
+using System.Data;
 
 namespace Lift
 {
@@ -39,6 +41,9 @@ namespace Lift
         private System.Windows.Forms.Timer doorMovementTimer; // Renamed to avoid conflict
         private System.Windows.Forms.Timer elevatorMovementTimer; // Renamed to avoid conflict
 
+        private DB database = new DB();
+
+
         public Form1()
         {
             InitializeComponent();
@@ -50,8 +55,8 @@ namespace Lift
 
             animation.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            doorOpenSound = new SoundPlayer(@"Resources\opensound.wav");
-            doorCloseSound = new SoundPlayer(@"Resources\opensound.wav");
+            doorOpenSound = new SoundPlayer(@"Resources\open.wav");
+            doorCloseSound = new SoundPlayer(@"Resources\open.wav");
             moveElevator = new SoundPlayer(@"Resources\move.wav");
 
             initialLeftDoorPosition = leftdoor1.Left;
@@ -71,6 +76,7 @@ namespace Lift
             elevatorMovementTimer.Interval = 100; // Timer for elevator movement
             elevatorMovementTimer.Tick += elevatorTimers_Tick;
 
+            LoadLogs();
             UpdateDisplay();
         }
 
@@ -80,6 +86,7 @@ namespace Lift
             {
                 currentDoorState.OpenDoor(this);
                 ToggleDoorButtons();
+                database.InsertLog("Open Door", $"Floor {currentFloor + 1}");
             }
         }
 
@@ -89,6 +96,7 @@ namespace Lift
             {
                 currentDoorState.CloseDoor(this);
                 ToggleDoorButtons();
+                database.InsertLog("Close Door", $"Floor {currentFloor + 1}");
             }
         }
 
@@ -97,6 +105,8 @@ namespace Lift
             if (!isMoving && currentFloor != floor && !closingDoors) // Ensure doors are not closing when requesting
             {
                 targetFloor = floor;
+                database.InsertLog($"Request Floor {floor + 1}", $"Current Floor: {currentFloor + 1}");
+
 
                 if (currentDoorState is OpenState) // Close the doors first if they're open
                 {
@@ -116,6 +126,8 @@ namespace Lift
             ToggleButtons(false);
             animation.Image = targetFloor > currentFloor ? upImage : downImage; // Start animation
             elevatorMovementTimer.Start(); // Start elevator movement timer
+
+            moveElevator.Play();
         }
 
         private void elevatorTimers_Tick(object? sender, EventArgs e)
@@ -163,12 +175,15 @@ namespace Lift
             UpdateDisplay();
             ToggleButtons(true); // Re-enable buttons when elevator stops moving
 
+            moveElevator.Stop();
+
             // Clear the image after arriving
             pictureBox1.Image = null;
             animation.Image = null; // Clear the animation PictureBox
 
             // Open door upon arrival
             currentDoorState.OpenDoor(this);
+            database.InsertLog("Arrived at Floor", $"Floor {currentFloor + 1}");
         }
 
         private void ToggleButtons(bool isEnabled)
@@ -207,6 +222,8 @@ namespace Lift
                 form.currentDoorState = new ClosedState();
                 form.closingDoors = true;
                 form.doorMovementTimer.Start(); // Use renamed timer
+
+                form.doorCloseSound.Play();
             }
         }
 
@@ -219,12 +236,16 @@ namespace Lift
                 form.currentDoorState = new OpenState();
                 form.openingDoors = true;
                 form.doorMovementTimer.Start(); // Use renamed timer
+
+                form.doorOpenSound.Play();
             }
 
             public void CloseDoor(Form1 form)
             {
                 form.closingDoors = true;
                 form.doorMovementTimer.Start();
+
+                form.doorCloseSound.Play();
             }
         }
 
@@ -337,7 +358,7 @@ namespace Lift
 
         private void animation_Click(object sender, EventArgs e)
         {
-            
+
         }
 
         private void btnRequestFloor1_Click_1(object sender, EventArgs e)
@@ -398,6 +419,41 @@ namespace Lift
         private void rightdoor2_Click(object sender, EventArgs e)
         {
             // Handle click for right door 2 (if any specific logic needed)
+        }
+
+        private void lblCurrentFloor0_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblCurrentFloor_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Check if the clicked cell is valid
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                // Get the value of the clicked cell
+                string action = dataGridView.Rows[e.RowIndex].Cells["Action"].Value.ToString(); // Replace "Action" with the actual column name
+                string details = dataGridView.Rows[e.RowIndex].Cells["Details"].Value.ToString(); // Replace "Details" with the actual column name
+
+                // Display the action and details in a message box or any other UI element
+                MessageBox.Show($"Action: {action}\nDetails: {details}", "Log Details");
+            }
+        }
+
+        private void LoadLogs()
+        {
+            DataTable logs = database.LoadLogs(); 
+            dataGridView.DataSource = logs; 
         }
 
     }

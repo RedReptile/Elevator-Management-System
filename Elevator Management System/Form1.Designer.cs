@@ -45,15 +45,15 @@
             callDown = new Button();
             panel1 = new Panel();
             pictureBox4 = new PictureBox();
-            panel2 = new Panel();
-            panel3 = new Panel();
-            panel6 = new Panel();
-            callUp = new Button();
             panel7 = new Panel();
             btnRequestFloor1 = new Button();
             btnRequestFloor0 = new Button();
             Emergency = new Button();
             animation = new PictureBox();
+            panel2 = new Panel();
+            panel3 = new Panel();
+            panel6 = new Panel();
+            callUp = new Button();
             pictureBox6 = new PictureBox();
             pictureBox7 = new PictureBox();
             pictureBox8 = new PictureBox();
@@ -75,10 +75,10 @@
             panel5.SuspendLayout();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
-            panel2.SuspendLayout();
-            panel6.SuspendLayout();
             panel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)animation).BeginInit();
+            panel2.SuspendLayout();
+            panel6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).BeginInit();
@@ -113,11 +113,12 @@
             lblCurrentFloor.BackColor = SystemColors.ControlLight;
             lblCurrentFloor.BorderStyle = BorderStyle.Fixed3D;
             lblCurrentFloor.Font = new Font("Calisto MT", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblCurrentFloor.Location = new Point(735, 12);
+            lblCurrentFloor.Location = new Point(1029, 12);
             lblCurrentFloor.Name = "lblCurrentFloor";
             lblCurrentFloor.Size = new Size(101, 22);
             lblCurrentFloor.TabIndex = 7;
             lblCurrentFloor.Text = ".... Curr ....";
+            lblCurrentFloor.Click += lblCurrentFloor_Click;
             // 
             // pictureBox1
             // 
@@ -125,7 +126,7 @@
             pictureBox1.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__2_;
             pictureBox1.BackgroundImageLayout = ImageLayout.Stretch;
             pictureBox1.BorderStyle = BorderStyle.Fixed3D;
-            pictureBox1.Location = new Point(688, 353);
+            pictureBox1.Location = new Point(982, 353);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(146, 171);
             pictureBox1.TabIndex = 11;
@@ -168,7 +169,7 @@
             // 
             pictureBox2.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790_Photoroom;
             pictureBox2.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox2.Location = new Point(653, 262);
+            pictureBox2.Location = new Point(947, 262);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(420, 355);
             pictureBox2.TabIndex = 19;
@@ -178,7 +179,7 @@
             // 
             pictureBox3.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790_Photoroom;
             pictureBox3.BackgroundImageLayout = ImageLayout.Stretch;
-            pictureBox3.Location = new Point(653, -37);
+            pictureBox3.Location = new Point(947, -37);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new Size(420, 355);
             pictureBox3.TabIndex = 20;
@@ -189,7 +190,7 @@
             panel4.BackgroundImage = Elevator_Management_System.Properties.Resources.G;
             panel4.BackgroundImageLayout = ImageLayout.Stretch;
             panel4.Controls.Add(pictureBox5);
-            panel4.Location = new Point(486, 262);
+            panel4.Location = new Point(780, 262);
             panel4.Name = "panel4";
             panel4.Size = new Size(193, 354);
             panel4.TabIndex = 22;
@@ -232,7 +233,7 @@
             panel1.BackgroundImage = Elevator_Management_System.Properties.Resources.G;
             panel1.BackgroundImageLayout = ImageLayout.Stretch;
             panel1.Controls.Add(pictureBox4);
-            panel1.Location = new Point(486, -37);
+            panel1.Location = new Point(780, -37);
             panel1.Name = "panel1";
             panel1.Size = new Size(193, 354);
             panel1.TabIndex = 23;
@@ -248,47 +249,6 @@
             pictureBox4.TabIndex = 0;
             pictureBox4.TabStop = false;
             // 
-            // panel2
-            // 
-            panel2.BackgroundImage = Elevator_Management_System.Properties.Resources.G;
-            panel2.BackgroundImageLayout = ImageLayout.Stretch;
-            panel2.Controls.Add(panel5);
-            panel2.Location = new Point(843, 262);
-            panel2.Name = "panel2";
-            panel2.Size = new Size(193, 354);
-            panel2.TabIndex = 23;
-            // 
-            // panel3
-            // 
-            panel3.BackgroundImage = Elevator_Management_System.Properties.Resources.G;
-            panel3.BackgroundImageLayout = ImageLayout.Stretch;
-            panel3.Location = new Point(843, -36);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(193, 354);
-            panel3.TabIndex = 24;
-            // 
-            // panel6
-            // 
-            panel6.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__3__Photoroom__2_;
-            panel6.BackgroundImageLayout = ImageLayout.Stretch;
-            panel6.BorderStyle = BorderStyle.FixedSingle;
-            panel6.Controls.Add(callUp);
-            panel6.Location = new Point(842, 49);
-            panel6.Name = "panel6";
-            panel6.Size = new Size(76, 152);
-            panel6.TabIndex = 26;
-            // 
-            // callUp
-            // 
-            callUp.BackgroundImage = Elevator_Management_System.Properties.Resources.icons8_slide_up_80;
-            callUp.BackgroundImageLayout = ImageLayout.Stretch;
-            callUp.Location = new Point(21, 67);
-            callUp.Name = "callUp";
-            callUp.Size = new Size(30, 33);
-            callUp.TabIndex = 0;
-            callUp.UseVisualStyleBackColor = true;
-            callUp.Click += callUp_Click;
-            // 
             // panel7
             // 
             panel7.BackgroundImage = Elevator_Management_System.Properties.Resources.snapedit_1730108276254__1_;
@@ -300,7 +260,7 @@
             panel7.Controls.Add(animation);
             panel7.Controls.Add(btnOpenDoor);
             panel7.Controls.Add(btnCloseDoor);
-            panel7.Location = new Point(325, 1);
+            panel7.Location = new Point(619, 3);
             panel7.Name = "panel7";
             panel7.Size = new Size(161, 278);
             panel7.TabIndex = 27;
@@ -351,10 +311,51 @@
             animation.TabStop = false;
             animation.Click += animation_Click;
             // 
+            // panel2
+            // 
+            panel2.BackgroundImage = Elevator_Management_System.Properties.Resources.G;
+            panel2.BackgroundImageLayout = ImageLayout.Stretch;
+            panel2.Controls.Add(panel5);
+            panel2.Location = new Point(1137, 262);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(193, 354);
+            panel2.TabIndex = 23;
+            // 
+            // panel3
+            // 
+            panel3.BackgroundImage = Elevator_Management_System.Properties.Resources.G;
+            panel3.BackgroundImageLayout = ImageLayout.Stretch;
+            panel3.Location = new Point(1137, -36);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(193, 354);
+            panel3.TabIndex = 24;
+            // 
+            // panel6
+            // 
+            panel6.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__3__Photoroom__2_;
+            panel6.BackgroundImageLayout = ImageLayout.Stretch;
+            panel6.BorderStyle = BorderStyle.FixedSingle;
+            panel6.Controls.Add(callUp);
+            panel6.Location = new Point(1136, 49);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(76, 152);
+            panel6.TabIndex = 26;
+            // 
+            // callUp
+            // 
+            callUp.BackgroundImage = Elevator_Management_System.Properties.Resources.icons8_slide_up_80;
+            callUp.BackgroundImageLayout = ImageLayout.Stretch;
+            callUp.Location = new Point(21, 67);
+            callUp.Name = "callUp";
+            callUp.Size = new Size(30, 33);
+            callUp.TabIndex = 0;
+            callUp.UseVisualStyleBackColor = true;
+            callUp.Click += callUp_Click;
+            // 
             // pictureBox6
             // 
             pictureBox6.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__3__Photoroom__1_;
-            pictureBox6.Location = new Point(679, 335);
+            pictureBox6.Location = new Point(973, 335);
             pictureBox6.Name = "pictureBox6";
             pictureBox6.Size = new Size(10, 192);
             pictureBox6.TabIndex = 19;
@@ -363,7 +364,7 @@
             // pictureBox7
             // 
             pictureBox7.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__3__Photoroom__1_;
-            pictureBox7.Location = new Point(834, 335);
+            pictureBox7.Location = new Point(1128, 335);
             pictureBox7.Name = "pictureBox7";
             pictureBox7.Size = new Size(10, 192);
             pictureBox7.TabIndex = 29;
@@ -372,7 +373,7 @@
             // pictureBox8
             // 
             pictureBox8.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__3__Photoroom__1_;
-            pictureBox8.Location = new Point(679, 36);
+            pictureBox8.Location = new Point(973, 36);
             pictureBox8.Name = "pictureBox8";
             pictureBox8.Size = new Size(10, 194);
             pictureBox8.TabIndex = 30;
@@ -381,7 +382,7 @@
             // pictureBox9
             // 
             pictureBox9.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__3__Photoroom__1_;
-            pictureBox9.Location = new Point(834, 36);
+            pictureBox9.Location = new Point(1128, 36);
             pictureBox9.Name = "pictureBox9";
             pictureBox9.Size = new Size(10, 194);
             pictureBox9.TabIndex = 31;
@@ -393,24 +394,25 @@
             lblCurrentFloor0.BackColor = SystemColors.ControlLight;
             lblCurrentFloor0.BorderStyle = BorderStyle.Fixed3D;
             lblCurrentFloor0.Font = new Font("Calisto MT", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblCurrentFloor0.Location = new Point(735, 311);
+            lblCurrentFloor0.Location = new Point(1029, 311);
             lblCurrentFloor0.Name = "lblCurrentFloor0";
             lblCurrentFloor0.Size = new Size(101, 22);
             lblCurrentFloor0.TabIndex = 32;
             lblCurrentFloor0.Text = ".... Curr ....";
+            lblCurrentFloor0.Click += lblCurrentFloor0_Click;
             // 
             // panel8
             // 
             panel8.BackColor = SystemColors.AppWorkspace;
-            panel8.Location = new Point(324, 273);
+            panel8.Location = new Point(619, 273);
             panel8.Name = "panel8";
-            panel8.Size = new Size(162, 20);
+            panel8.Size = new Size(161, 20);
             panel8.TabIndex = 28;
             // 
             // pictureBox10
             // 
             pictureBox10.BackgroundImage = Elevator_Management_System.Properties.Resources.snapedit_1730108276254__1_1;
-            pictureBox10.Location = new Point(325, 300);
+            pictureBox10.Location = new Point(619, 300);
             pictureBox10.Name = "pictureBox10";
             pictureBox10.Size = new Size(161, 317);
             pictureBox10.TabIndex = 33;
@@ -420,20 +422,23 @@
             // 
             dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
-            dataGridView.BackgroundColor = Color.FromArgb(224, 224, 224);
+            dataGridView.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridView.BackgroundColor = SystemColors.ControlLight;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Location = new Point(9, 1);
+            dataGridView.GridColor = Color.FromArgb(0, 64, 64);
+            dataGridView.Location = new Point(5, -1);
             dataGridView.Name = "dataGridView";
             dataGridView.RowHeadersWidth = 51;
-            dataGridView.Size = new Size(301, 615);
+            dataGridView.ScrollBars = ScrollBars.Vertical;
+            dataGridView.Size = new Size(534, 589);
             dataGridView.TabIndex = 34;
+            dataGridView.CellContentClick += dataGridView_CellContentClick;
             // 
             // leftdoor2
             // 
             leftdoor2.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__1_;
             leftdoor2.BackgroundImageLayout = ImageLayout.Stretch;
-            leftdoor2.Location = new Point(688, 58);
+            leftdoor2.Location = new Point(982, 58);
             leftdoor2.Name = "leftdoor2";
             leftdoor2.Size = new Size(77, 172);
             leftdoor2.TabIndex = 35;
@@ -444,7 +449,7 @@
             // 
             rightdoor2.BackgroundImage = Elevator_Management_System.Properties.Resources.H;
             rightdoor2.BackgroundImageLayout = ImageLayout.Stretch;
-            rightdoor2.Location = new Point(764, 58);
+            rightdoor2.Location = new Point(1058, 58);
             rightdoor2.Name = "rightdoor2";
             rightdoor2.Size = new Size(71, 172);
             rightdoor2.TabIndex = 36;
@@ -455,7 +460,7 @@
             // 
             leftdoor1.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__1_;
             leftdoor1.BackgroundImageLayout = ImageLayout.Stretch;
-            leftdoor1.Location = new Point(688, 353);
+            leftdoor1.Location = new Point(982, 353);
             leftdoor1.Name = "leftdoor1";
             leftdoor1.Size = new Size(77, 172);
             leftdoor1.TabIndex = 37;
@@ -466,7 +471,7 @@
             // 
             rightdoor1.BackgroundImage = Elevator_Management_System.Properties.Resources.H;
             rightdoor1.BackgroundImageLayout = ImageLayout.Stretch;
-            rightdoor1.Location = new Point(762, 353);
+            rightdoor1.Location = new Point(1056, 353);
             rightdoor1.Name = "rightdoor1";
             rightdoor1.Size = new Size(73, 172);
             rightdoor1.TabIndex = 38;
@@ -483,7 +488,9 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            ClientSize = new Size(1067, 592);
+            ClientSize = new Size(1292, 592);
+            Controls.Add(panel8);
+            Controls.Add(panel7);
             Controls.Add(panel4);
             Controls.Add(panel1);
             Controls.Add(panel2);
@@ -500,8 +507,6 @@
             Controls.Add(pictureBox8);
             Controls.Add(pictureBox7);
             Controls.Add(pictureBox6);
-            Controls.Add(panel8);
-            Controls.Add(panel7);
             Controls.Add(pictureBox1);
             Controls.Add(lblCurrentFloor);
             Controls.Add(lblFloor2Status);
@@ -522,10 +527,10 @@
             panel5.ResumeLayout(false);
             panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
-            panel2.ResumeLayout(false);
-            panel6.ResumeLayout(false);
             panel7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)animation).EndInit();
+            panel2.ResumeLayout(false);
+            panel6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox8).EndInit();

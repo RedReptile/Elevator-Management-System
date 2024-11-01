@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <None Remove="Resources\dg.png" />
+    <None Remove="Resources\move.wav" />
+    <None Remove="Resources\open.wav" />
     <None Remove="Resources\ug.png" />
   </ItemGroup>
 
@@ -18,9 +20,19 @@
     <Content Include="Resources\dg.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\move.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\open.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\ug.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>
