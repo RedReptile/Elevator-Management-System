@@ -67,6 +67,7 @@
             leftdoor1 = new PictureBox();
             rightdoor1 = new PictureBox();
             elevatorTimers = new System.Windows.Forms.Timer(components);
+            autoDown = new System.Windows.Forms.Timer(components);
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -482,6 +483,10 @@
             // 
             elevatorTimers.Tick += elevatorTimers_Tick;
             // 
+            // autoDown
+            // 
+            autoDown.Tick += autoDown_Tick;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -589,6 +594,7 @@
         private Button btnRequestFloor1;
         private Button callDown;
         private System.Windows.Forms.Timer autoCloseTimer;
+        private System.Windows.Forms.Timer autoDown;
         // Ensure you handle null cases later.
 
     }

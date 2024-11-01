@@ -40,6 +40,7 @@ namespace Lift
         private System.Windows.Forms.Timer autoCloseTimerControl;
         private System.Windows.Forms.Timer doorMovementTimer; // Renamed to avoid conflict
         private System.Windows.Forms.Timer elevatorMovementTimer; // Renamed to avoid conflict
+        private System.Windows.Forms.Timer autoDownTimer;
 
         private DB database = new DB();
 
@@ -75,6 +76,10 @@ namespace Lift
             elevatorMovementTimer = new System.Windows.Forms.Timer(); // Use renamed timer
             elevatorMovementTimer.Interval = 100; // Timer for elevator movement
             elevatorMovementTimer.Tick += elevatorTimers_Tick;
+
+            autoDownTimer = new System.Windows.Forms.Timer();
+            autoDownTimer.Interval = 1000; // 1 second interval
+            autoDownTimer.Tick += autoDown_Tick;
 
             LoadLogs();
             UpdateDisplay();
@@ -137,6 +142,8 @@ namespace Lift
 
         private void MoveElevator()
         {
+            if (isMoving) return;
+
             if (currentFloor < targetFloor)
             {
                 if (pictureBox1.Top > Floor2Position)
@@ -452,8 +459,37 @@ namespace Lift
 
         private void LoadLogs()
         {
-            DataTable logs = database.LoadLogs(); 
-            dataGridView.DataSource = logs; 
+            DataTable logs = database.LoadLogs();
+            dataGridView.DataSource = logs;
+        }
+
+        private void StartAutoDownMovement()
+        {
+            // Start the timer for auto-down movement
+            autoDownTimer.Start();
+        }
+
+        private void autoDown_Tick(object sender, EventArgs e)
+        {
+            // Move elevator down for 5 seconds
+            if (pictureBox1.Top < Floor2Position)
+            {
+                pictureBox1.Top += elevatorSpeed; // Move elevator down
+            }
+            else
+            {
+                // Stop the timer when the elevator reaches the target position
+                autoDownTimer.Stop();
+                ArrivedAtFloor(); // Call method to handle actions upon arrival
+            }
+        }
+
+        private void CallAutoDown()
+        {
+            if (currentFloor == 1) // Check if currently on the second floor
+            {
+                StartAutoDownMovement(); // Start moving down
+            }
         }
 
     }
