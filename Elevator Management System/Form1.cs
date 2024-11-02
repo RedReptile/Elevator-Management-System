@@ -502,7 +502,7 @@ namespace Lift
         {
             isMoving = false;
             closingDoors = false;
-            openingDoors = false; 
+            openingDoors = false;
 
             ToggleButtons(true);
 
@@ -511,7 +511,7 @@ namespace Lift
                 StartMoving();
             }
 
-            string message = "Elevator reset and moving resumed";
+            string message = "Elevator reset";
             LogAction(message);
         }
     }
