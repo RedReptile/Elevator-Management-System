@@ -67,6 +67,11 @@
             leftdoor1 = new PictureBox();
             rightdoor1 = new PictureBox();
             elevatorTimers = new System.Windows.Forms.Timer(components);
+            autoDown = new System.Windows.Forms.Timer(components);
+            button2 = new Button();
+            clear = new Button();
+            logs = new Button();
+            reset = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -482,6 +487,62 @@
             // 
             elevatorTimers.Tick += elevatorTimers_Tick;
             // 
+            // autoDown
+            // 
+            autoDown.Tick += autoDown_Tick;
+            // 
+            // button2
+            // 
+            button2.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__3__Photoroom__1_;
+            button2.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            button2.ForeColor = SystemColors.ButtonFace;
+            button2.Location = new Point(626, 521);
+            button2.Name = "button2";
+            button2.Size = new Size(148, 46);
+            button2.TabIndex = 40;
+            button2.Text = "Close";
+            button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
+            // 
+            // clear
+            // 
+            clear.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__3__Photoroom__1_1;
+            clear.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            clear.ForeColor = SystemColors.ButtonFace;
+            clear.Location = new Point(626, 391);
+            clear.Name = "clear";
+            clear.Size = new Size(148, 46);
+            clear.TabIndex = 41;
+            clear.Text = "Clear";
+            clear.UseVisualStyleBackColor = true;
+            clear.Click += clear_Click;
+            // 
+            // logs
+            // 
+            logs.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__3__Photoroom__1_;
+            logs.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            logs.ForeColor = SystemColors.ButtonFace;
+            logs.Location = new Point(626, 324);
+            logs.Name = "logs";
+            logs.Size = new Size(148, 46);
+            logs.TabIndex = 42;
+            logs.Text = "Logs";
+            logs.UseVisualStyleBackColor = true;
+            logs.Click += logs_Click;
+            // 
+            // reset
+            // 
+            reset.BackgroundImage = Elevator_Management_System.Properties.Resources._438648_PEONVH_790__3__Photoroom__1_1;
+            reset.Font = new Font("Segoe UI", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            reset.ForeColor = SystemColors.ButtonFace;
+            reset.Location = new Point(626, 456);
+            reset.Name = "reset";
+            reset.Size = new Size(148, 46);
+            reset.TabIndex = 43;
+            reset.Text = "Reset";
+            reset.UseVisualStyleBackColor = true;
+            reset.Click += reset_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -489,6 +550,10 @@
             AutoSize = true;
             AutoSizeMode = AutoSizeMode.GrowAndShrink;
             ClientSize = new Size(1292, 592);
+            Controls.Add(reset);
+            Controls.Add(logs);
+            Controls.Add(clear);
+            Controls.Add(button2);
             Controls.Add(panel8);
             Controls.Add(panel7);
             Controls.Add(panel4);
@@ -589,6 +654,11 @@
         private Button btnRequestFloor1;
         private Button callDown;
         private System.Windows.Forms.Timer autoCloseTimer;
+        private System.Windows.Forms.Timer autoDown;
+        private Button button2;
+        private Button clear;
+        private Button logs;
+        private Button reset;
         // Ensure you handle null cases later.
 
     }

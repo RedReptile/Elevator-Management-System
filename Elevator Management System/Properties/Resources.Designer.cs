@@ -143,6 +143,16 @@ namespace Elevator_Management_System.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Door {
+            get {
+                object obj = ResourceManager.GetObject("Door", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap G {
             get {
                 object obj = ResourceManager.GetObject("G", resourceCulture);
