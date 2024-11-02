@@ -5,10 +5,12 @@ using System.Media;
 using System.Threading.Tasks;
 using Elevator_Management_System;
 using System.Data;
+using Microsoft.VisualBasic.Logging;
 
 namespace Lift
 {
     public partial class Form1 : Form
+
     {
         private int currentFloor = 0; // Track the current floor
         private int targetFloor; // Target floor
@@ -23,7 +25,7 @@ namespace Lift
         private bool closingDoors = false;
         private int doorStep = 2; // Controls the speed of door movement
 
-        // Define initial door positions for each floor
+        // initial door positions for each floor
         private int initialLeftDoorPosition;
         private int initialRightDoorPosition;
         private int initialLeftDoor1Position;
@@ -40,10 +42,8 @@ namespace Lift
         private System.Windows.Forms.Timer autoCloseTimerControl;
         private System.Windows.Forms.Timer doorMovementTimer; // Renamed to avoid conflict
         private System.Windows.Forms.Timer elevatorMovementTimer; // Renamed to avoid conflict
-        private System.Windows.Forms.Timer autoDownTimer;
 
-        private DB database = new DB();
-
+        private DB db;
 
         public Form1()
         {
@@ -67,58 +67,61 @@ namespace Lift
 
             doorAnimationTimer = new System.Windows.Forms.Timer();
             doorAnimationTimer.Interval = 1000; // 1 second interval
-            doorAnimationTimer.Tick += doorAnimationTimer_Tick; // Attach the tick event
+            doorAnimationTimer.Tick += doorAnimationTimer_Tick;
 
-            doorMovementTimer = new System.Windows.Forms.Timer(); // Use renamed timer
-            doorMovementTimer.Interval = 50; // Timer for door movement
+            doorMovementTimer = new System.Windows.Forms.Timer();
+            doorMovementTimer.Interval = 50;
             doorMovementTimer.Tick += doorTimer_Tick;
 
-            elevatorMovementTimer = new System.Windows.Forms.Timer(); // Use renamed timer
-            elevatorMovementTimer.Interval = 100; // Timer for elevator movement
+            elevatorMovementTimer = new System.Windows.Forms.Timer();
+            elevatorMovementTimer.Interval = 100;
             elevatorMovementTimer.Tick += elevatorTimers_Tick;
 
-            autoDownTimer = new System.Windows.Forms.Timer();
-            autoDownTimer.Interval = 1000; // 1 second interval
-            autoDownTimer.Tick += autoDown_Tick;
+            db = new DB();
+            db.InitializeDatabase();
 
-            LoadLogs();
+            dataGridView.DataSource = db.GetLogs();
+
             UpdateDisplay();
         }
 
         private void btnOpenDoor_Click(object sender, EventArgs e)
         {
-            if (!isMoving) // Only open if elevator is not moving
+            if (!isMoving)
             {
                 currentDoorState.OpenDoor(this);
                 ToggleDoorButtons();
-                database.InsertLog("Open Door", $"Floor {currentFloor + 1}");
+
+                string message = "Door opened";
+                LogAction(message);
             }
         }
 
         private void btnCloseDoor_Click(object sender, EventArgs e)
         {
-            if (!isMoving) // Only close if elevator is not moving
+            if (!isMoving)
             {
                 currentDoorState.CloseDoor(this);
                 ToggleDoorButtons();
-                database.InsertLog("Close Door", $"Floor {currentFloor + 1}");
+
+                string message = "Door closed";
+                LogAction(message);
             }
         }
 
         private void RequestFloor(int floor)
         {
-            if (!isMoving && currentFloor != floor && !closingDoors) // Ensure doors are not closing when requesting
+            if (!isMoving && currentFloor != floor && !closingDoors)
             {
                 targetFloor = floor;
-                database.InsertLog($"Request Floor {floor + 1}", $"Current Floor: {currentFloor + 1}");
 
 
-                if (currentDoorState is OpenState) // Close the doors first if they're open
+                if (currentDoorState is OpenState)
                 {
                     currentDoorState.CloseDoor(this);
                     ToggleDoorButtons();
                 }
-                else if (currentDoorState is ClosedState) // If doors are already closed, start moving
+                else if (currentDoorState is ClosedState)
                 {
                     StartMoving();
                 }
@@ -129,8 +132,8 @@ namespace Lift
         {
             isMoving = true;
             ToggleButtons(false);
-            animation.Image = targetFloor > currentFloor ? upImage : downImage; // Start animation
-            elevatorMovementTimer.Start(); // Start elevator movement timer
+            animation.Image = targetFloor > currentFloor ? upImage : downImage;
+            elevatorMovementTimer.Start();
 
             moveElevator.Play();
         }
@@ -142,8 +145,6 @@ namespace Lift
 
         private void MoveElevator()
         {
-            if (isMoving) return;
-
             if (currentFloor < targetFloor)
             {
                 if (pictureBox1.Top > Floor2Position)
@@ -167,10 +168,10 @@ namespace Lift
                 }
             }
 
-            // If elevator is moving, show the animation in the PictureBox
+
             if (isMoving)
             {
-                animation.Image = targetFloor > currentFloor ? upImage : downImage; // Update animation PictureBox
+                animation.Image = targetFloor > currentFloor ? upImage : downImage;
             }
         }
 
@@ -180,17 +181,15 @@ namespace Lift
             isMoving = false;
             currentFloor = targetFloor;
             UpdateDisplay();
-            ToggleButtons(true); // Re-enable buttons when elevator stops moving
+            ToggleButtons(true);
 
             moveElevator.Stop();
 
-            // Clear the image after arriving
             pictureBox1.Image = null;
-            animation.Image = null; // Clear the animation PictureBox
+            animation.Image = null;
 
             // Open door upon arrival
             currentDoorState.OpenDoor(this);
-            database.InsertLog("Arrived at Floor", $"Floor {currentFloor + 1}");
         }
 
         private void ToggleButtons(bool isEnabled)
@@ -221,14 +220,14 @@ namespace Lift
         {
             public void OpenDoor(Form1 form)
             {
-                // Doors are already open, do nothing
+
             }
 
             public void CloseDoor(Form1 form)
             {
                 form.currentDoorState = new ClosedState();
                 form.closingDoors = true;
-                form.doorMovementTimer.Start(); // Use renamed timer
+                form.doorMovementTimer.Start();
 
                 form.doorCloseSound.Play();
             }
@@ -242,7 +241,7 @@ namespace Lift
 
                 form.currentDoorState = new OpenState();
                 form.openingDoors = true;
-                form.doorMovementTimer.Start(); // Use renamed timer
+                form.doorMovementTimer.Start();
 
                 form.doorOpenSound.Play();
             }
@@ -256,7 +255,6 @@ namespace Lift
             }
         }
 
-        // Method to gradually open/close doors for Floor 1
         private void OpenDoorsFloor1()
         {
             if (leftdoor1.Left > initialLeftDoorPosition - 100)
@@ -279,7 +277,6 @@ namespace Lift
                 rightdoor1.Left -= doorStep;
         }
 
-        // Method to gradually open/close doors for Floor 2
         private void OpenDoorsFloor2()
         {
             if (leftdoor2.Left > initialLeftDoor1Position - 100)
@@ -289,8 +286,8 @@ namespace Lift
 
             if (leftdoor2.Left <= initialLeftDoor1Position - 70)
             {
-                doorOpenDuration = 0; // Reset the timer
-                doorAnimationTimer.Start(); // Start the timer for auto close
+                doorOpenDuration = 0;
+                doorAnimationTimer.Start();
             }
         }
 
@@ -314,7 +311,7 @@ namespace Lift
                 if ((currentFloor == 0 && leftdoor1.Left <= initialLeftDoorPosition - 70) ||
                     (currentFloor == 1 && leftdoor2.Left <= initialLeftDoor1Position - 70))
                 {
-                    doorMovementTimer.Stop(); // Stop the door movement timer
+                    doorMovementTimer.Stop();
                     openingDoors = false;
                 }
             }
@@ -332,8 +329,7 @@ namespace Lift
                     doorMovementTimer.Stop();
                     closingDoors = false;
 
-                    // Only start moving after doors are fully closed
-                    if (targetFloor != currentFloor) // Ensure there is a target floor to move to
+                    if (targetFloor != currentFloor)
                     {
                         StartMoving();
                     }
@@ -351,16 +347,17 @@ namespace Lift
         }
 
 
-        // Event handlers for button clicks for requesting floors
         private void btnRequestFloor0_Click(object sender, EventArgs e)
         {
             RequestFloor(0); // Request Floor 0
+            string message = "Requested Floor 0";
+            LogAction(message);
         }
 
 
         private void leftdoor2_Click(object sender, EventArgs e)
         {
-            // Handle click for left door 2 (if any specific logic needed)
+
         }
 
         private void animation_Click(object sender, EventArgs e)
@@ -370,12 +367,13 @@ namespace Lift
 
         private void btnRequestFloor1_Click_1(object sender, EventArgs e)
         {
-            RequestFloor(1); // Request Floor 1
+            RequestFloor(1);
+            string message = "Requested Floor 1";
+            LogAction(message);
         }
 
         private void callDown_Click(object sender, EventArgs e)
         {
-            // Logic to handle the call down button click
             RequestFloor(0);
         }
 
@@ -388,10 +386,10 @@ namespace Lift
         {
             doorOpenDuration++;
 
-            if (doorOpenDuration >= 5) // Check if doors have been open for 5 seconds
+            if (doorOpenDuration >= 5)
             {
-                btnCloseDoor.PerformClick(); // Simulate button click to close doors
-                doorAnimationTimer.Stop(); // Stop the timer
+                btnCloseDoor.PerformClick();
+                doorAnimationTimer.Stop();
             }
         }
 
@@ -411,21 +409,38 @@ namespace Lift
             lblCurrentFloor.Text = "Stopped";
             lblCurrentFloor0.Text = "Stooped";
 
+            string message = "Emergency button pressed";
+            LogAction(message);
+
+        }
+
+        private void LogAction(string action)
+        {
+            string floor = $"Current Floor: {targetFloor + 1}";
+
+            var logsDataTable = (DataTable)dataGridView.DataSource;
+            var newRow = logsDataTable.NewRow();
+            newRow["Action"] = action;
+            newRow["Details"] = currentFloor;
+            newRow["Timestamp"] = DateTime.Now;
+            logsDataTable.Rows.Add(newRow);
+
+            db.InsertLog(action, floor, dataGridView);
         }
 
         private void leftdoor1_Click(object sender, EventArgs e)
         {
-            // Handle click for left door 1 (if any specific logic needed)
+
         }
 
         private void rightdoor1_Click(object sender, EventArgs e)
         {
-            // Handle click for right door 1 (if any specific logic needed)
+
         }
 
         private void rightdoor2_Click(object sender, EventArgs e)
         {
-            // Handle click for right door 2 (if any specific logic needed)
+
         }
 
         private void lblCurrentFloor0_Click(object sender, EventArgs e)
@@ -438,59 +453,66 @@ namespace Lift
 
         }
 
+        private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void autoDown_Tick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void logs_Click(object sender, EventArgs e)
+        {
+            DB db = new DB();
+            db.SaveDataGridViewToDatabase(dataGridView);
+
+            dataGridView.DataSource = db.GetLogs();
+        }
+
+
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void dataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void refresh_Click(object sender, EventArgs e)
         {
-            // Check if the clicked cell is valid
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+
+        }
+
+        private void clear_Click(object sender, EventArgs e)
+        {
+            DB db = new DB();
+
+            db.ClearAllData();
+
+            dataGridView.DataSource = null;
+
+            MessageBox.Show("All data cleared successfully.");
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void reset_Click(object sender, EventArgs e)
+        {
+            isMoving = false;
+            closingDoors = false;
+            openingDoors = false; 
+
+            ToggleButtons(true);
+
+            if (currentFloor != targetFloor)
             {
-                // Get the value of the clicked cell
-                string action = dataGridView.Rows[e.RowIndex].Cells["Action"].Value.ToString(); // Replace "Action" with the actual column name
-                string details = dataGridView.Rows[e.RowIndex].Cells["Details"].Value.ToString(); // Replace "Details" with the actual column name
-
-                // Display the action and details in a message box or any other UI element
-                MessageBox.Show($"Action: {action}\nDetails: {details}", "Log Details");
+                StartMoving();
             }
-        }
 
-        private void LoadLogs()
-        {
-            DataTable logs = database.LoadLogs();
-            dataGridView.DataSource = logs;
+            string message = "Elevator reset and moving resumed";
+            LogAction(message);
         }
-
-        private void StartAutoDownMovement()
-        {
-            // Start the timer for auto-down movement
-            autoDownTimer.Start();
-        }
-
-        private void autoDown_Tick(object sender, EventArgs e)
-        {
-            // Move elevator down for 5 seconds
-            if (pictureBox1.Top < Floor2Position)
-            {
-                pictureBox1.Top += elevatorSpeed; // Move elevator down
-            }
-            else
-            {
-                // Stop the timer when the elevator reaches the target position
-                autoDownTimer.Stop();
-                ArrivedAtFloor(); // Call method to handle actions upon arrival
-            }
-        }
-
-        private void CallAutoDown()
-        {
-            if (currentFloor == 1) // Check if currently on the second floor
-            {
-                StartAutoDownMovement(); // Start moving down
-            }
-        }
-
     }
 }
