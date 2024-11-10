@@ -10,7 +10,7 @@ public class DB
 
     public DB()
     {
-        _connectionString = @"Server=DESKTOP-IRVKMUV\MSSQLSERVER01;Database=Lift;Trusted_Connection=True;";
+        _connectionString = @"Data Source=DESKTOP-IRVKMUV\MSSQLSERVER01;Database=Lift;Trusted_Connection=True;";
     }
 
     private SqlConnection GetConnection()
@@ -74,47 +74,48 @@ public class DB
     }
 
     public void SaveDataGridViewToDatabase(DataGridView dataGridView)
+{
+    try
     {
-        try
+        using (var connection = GetConnection())
         {
-            using (var connection = GetConnection())
+            if (connection == null) return;
+
+            foreach (DataGridViewRow row in dataGridView.Rows)
             {
-                if (connection == null) return;
+                if (row.IsNewRow) continue;
 
-                foreach (DataGridViewRow row in dataGridView.Rows)
+                string action = row.Cells["Action"].Value?.ToString() ?? string.Empty;
+                string details = row.Cells["Details"].Value?.ToString() ?? string.Empty;
+
+                var checkQuery = "SELECT COUNT(*) FROM DataLogs WHERE Action = @Action AND Details = @Details";
+                using (var checkCommand = new SqlCommand(checkQuery, connection))
                 {
-                    if (row.IsNewRow) continue;
-
-                    string action = row.Cells["Action"].Value?.ToString() ?? string.Empty;
-                    string details = row.Cells["Details"].Value?.ToString() ?? string.Empty;
-
-                    var checkQuery = "SELECT COUNT(*) FROM DataLogs WHERE Action = @Action AND Details = @Details";
-                    using (var checkCommand = new SqlCommand(checkQuery, connection))
-                    {
-                        checkCommand.Parameters.AddWithValue("@Action", action);
-                        checkCommand.Parameters.AddWithValue("@Details", details);
-                        int count = (int)checkCommand.ExecuteScalar();
-                        if (count > 0) continue;
-                    }
-
-                    var query = "INSERT INTO DataLogs (Action, Details, Timestamp) VALUES (@Action, @Details, @Timestamp)";
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@Action", action);
-                        command.Parameters.AddWithValue("@Details", details);
-                        command.Parameters.AddWithValue("@Timestamp", DateTime.Now);
-                        command.ExecuteNonQuery();
-                    }
+                    checkCommand.Parameters.AddWithValue("@Action", action);
+                    checkCommand.Parameters.AddWithValue("@Details", details);
+                    int count = (int)checkCommand.ExecuteScalar();
+                    if (count > 0) continue;
                 }
 
-                MessageBox.Show("All logs have been saved to the database.");
+                var query = "INSERT INTO DataLogs (Action, Details, Timestamp) VALUES (@Action, @Details, @Timestamp)";
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Action", action);
+                    command.Parameters.AddWithValue("@Details", details);
+                    command.Parameters.AddWithValue("@Timestamp", DateTime.Now);
+                    command.ExecuteNonQuery();
+                }
             }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"Error saving logs: {ex.Message}");
+
+            MessageBox.Show("All logs have been saved to the database.");
         }
     }
+    catch (Exception ex)
+    {
+        MessageBox.Show($"Error saving logs: {ex.Message}");
+    }
+}
+
 
 
     private void ExecuteNonQuery(string query, Dictionary<string, object> parameters = null)
@@ -179,7 +180,7 @@ public class DB
             using (SqlConnection connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
-                string query = "TRUNCATE TABLE DataLogs;"; 
+                string query = "TRUNCATE TABLE DataLogs;";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
